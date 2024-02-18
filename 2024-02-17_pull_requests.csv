@@ -1,0 +1,46 @@
+Title,Body,State,Username
+Firebase v10,"This PR seeks to update the firebase syntax from v8 to v10 and provide a reference of necessary changes for anyone building the project with @latest packages.
+
+Initially, I tired to only update the minimum dependencies of firebase, react and react-dom, but at the end I ran into one issue with `getUserWithUsername` throwing an error about `collection()` not being passed a valid reference even though it was being passed `firestore` and was seemingly working fine in other files. In the end, I decided to just update react/next.js to latest and this resolved the issue.
+
+The following changes are made:
+- Update necessary packages to latest
+- Fix bug with unheart showing because `exists` was being treated as a boolean instead of a function [Similar PR](https://github.com/fireship-io/next-firebase-course/pull/15)
+- Copies react-hook-form updates from https://github.com/fireship-io/next-firebase-course/pull/4 (If updating this course, please integrate the original authors PR first so they are credited)
+- Temp fixes `<Link>` containing `<a>` errors with `legacyBehavior`. CSS might need an update after removing `<a>` and `legacyBehavior`. *While writing this PR note, i just realized i blindly added legacyBehavior to all links while getting ready to check in. This is actually only needed on links that contain `<a>`*
+- Updates all firebase commands and adds a few TODOs to consider
+
+**Note** This is my first time using firebase so there might be a better implementation. I've placed a few TODOs with points you might need to consider if using this project as a boilerplate.",open,SkylerA
+add user={undefined} to UserProfile.js,"What: add user={undefined} to user (line 2 of file ""UserProfile.js"")
+Where: UserProfile.js
+Why: to avoid TypeError: Cannot read properties of undefined (reading 'photoURL'), (reading 'username') and (reading 'displayName').
+
+Code should look like this:
+```
+// UI component for user profile
+export default function UserProfile({ user={undefined} }) {
+  return (
+    <div className=""box-center"">
+      <img src={user.photoURL || '/hacker.png'} className=""card-img-center"" />
+      <p>
+        <i>@{user.username}</i>
+      </p>
+      <h1>{user.displayName || 'Anonymous User'}</h1>
+    </div>
+  );
+}
+```",open,andriusmv
+Update HeartButton.js,"There's a typo in this code, the method is exists()",open,thegregthomp
+[FIX]  Home page,The error occurred when trying to load more posts with an empty database,open,Rebraxin
+Update globals.css,Fixed the incorrect variable usage in global.css,open,noodlemind
+react-hook-form v6 to v7 migration,"Due to breaking changes between v6 and v7, react-hook-form is used differently.
+
+The edits in `pages/admin/[slug].js` will fix issues for anyone using the latest version of react-hook-form",open,MattA-Official
+Refactored file object,"It was complaining in `TypeScript`:
+`file.type`: property type does not exist",open,herol3oy
+new commit,,closed,ghost
+Added Comments in the Web Application Code,Added Comments to the code so that even beginners can easily figure out the logic for the website.,closed,lavizp
+Avoid using getFirestore function,"https://github.com/fireship-io/next-firebase-course/blob/96c177d53921570e16a039e483a4fcc279fb2375/lib/firebase.js#L73
+
+Prefers using `firestore` variable directly instead of using `getFirestore` function which may result in inconsistant behaviour (if another firebase app is added).",closed,scorsi
+Fix heartRef and doc.exists() for firebase v9,,closed,alexookah
